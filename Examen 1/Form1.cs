@@ -26,14 +26,11 @@ namespace Examen_1
         private void CargarCSV(string filePath)
         {
 
-            // Asegurar que no haya un DataSource previamente asignado
             dataGridEditor.DataSource = null;
 
-            // Limpiar filas y columnas antes de cargar nuevos datos
             dataGridEditor.Rows.Clear();
             dataGridEditor.Columns.Clear();
 
-            // Agregar columnas al DataGridView
             dataGridEditor.Columns.Add("CURP", "CURP");
             dataGridEditor.Columns.Add("Promedio", "Promedio");
             dataGridEditor.Columns.Add("Edad", "Edad");
@@ -42,11 +39,11 @@ namespace Examen_1
             using (StreamReader sr = new StreamReader(filePath))
             {
                 string line;
-                bool primeraLinea = true; // Para omitir encabezados si los hay
+                bool primeraLinea = true; 
 
                 while ((line = sr.ReadLine()) != null)
                 {
-                    // Omitir la primera línea si es un encabezado
+                   
                     if (primeraLinea)
                     {
                         primeraLinea = false;
@@ -55,26 +52,24 @@ namespace Examen_1
 
                     string[] datos = line.Split(',');
 
-                    if (datos.Length < 2) continue; // Evita errores si faltan datos
+                    if (datos.Length < 2) continue; 
 
                     string curp = datos[0].Trim();
                     string promedio = datos[1].Trim();
                     int edad = CalcularEdad(curp);
                     string sexo = DeterminarSexo(curp);
 
-                    // Agregar los datos al DataGridView
                     dataGridEditor.Rows.Add(curp, promedio, edad, sexo);
                 }
             }
 
-            // Forzar el refresco del DataGridView
             dataGridEditor.Refresh();
         }
 
 
         private int CalcularEdad(string curp)
         {
-            if (curp.Length < 18) return 0; // CURP incompleta
+            if (curp.Length < 18) return 0;
 
             string yearStr = curp.Substring(4, 2);
             string monthStr = curp.Substring(6, 2);
@@ -84,7 +79,7 @@ namespace Examen_1
             int month = int.Parse(monthStr);
             int day = int.Parse(dayStr);
 
-            // Determinar si es del 1900 o 2000
+        
             year += (year < 30) ? 2000 : 1900;
 
             DateTime fechaNacimiento = new DateTime(year, month, day);
@@ -100,7 +95,7 @@ namespace Examen_1
         {
             if (curp.Length < 11) return "Desconocido";
 
-            char sexo = curp[10]; // Posición 11 (índice 10)
+            char sexo = curp[10];
             return (sexo == 'H') ? "Hombre" : (sexo == 'M') ? "Mujer" : "Desconocido";
         }
 
